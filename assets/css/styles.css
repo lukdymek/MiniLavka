@@ -156,25 +156,49 @@ footer{border-color:var(--line);background:var(--cream);color:#eee8dc}
 @media(max-width:360px){.hero h1.logo-wordmark{font-size:64px}}
 
 
-/* Rustic wood image, with a cream wash to keep dark text readable. */
-:root{--wood-grain:url("../images/wood-background.webp");--wood-size:1200px 1200px}
+/* Shared rustic wood treatment on desktop and mobile. */
+:root{
+ --wood-grain:url("../images/wood-background.webp");
+ --wood-size:1200px 1200px;
+ --wood-wash:rgba(251,243,227,.48);
+}
 body{
- background-color:var(--bg,#fbf7ef);
- background-image:linear-gradient(rgba(251,247,239,.60),rgba(251,247,239,.60)),var(--wood-grain);
+ background-color:#bb9467;
+ background-image:linear-gradient(var(--wood-wash),var(--wood-wash)),var(--wood-grain);
  background-size:auto,var(--wood-size);
  background-position:top center;
  background-repeat:repeat;
 }
-#fav,#contacts{
- background-color:var(--bg2,#f0e8dc)!important;
- background-image:linear-gradient(rgba(240,232,220,.65),rgba(240,232,220,.65)),var(--wood-grain)!important;
+/* Keep one continuous wood surface rather than restarting at each section. */
+#fav,#contacts{background:transparent!important}
+.hero{background:none}
+.menu{
+ background-color:#e6d3b6;
+ background-image:linear-gradient(rgba(255,248,235,.70),rgba(255,248,235,.70)),var(--wood-grain);
  background-size:auto,var(--wood-size);
  background-position:top center;
+ border:1px solid #927044;
+ box-shadow:0 10px 32px #39230e18;
 }
-.menu,.card,.box{background:var(--card,#fffdf8)}
+.items{
+ background:rgba(255,251,242,.86);
+ border:1px solid rgba(126,90,46,.22);
+ border-radius:12px;
+ padding:4px 20px;
+}
+.it{border-color:rgba(126,90,46,.25)}
+.card,.box{background:#fffaf0}
+.strip{background:rgba(255,250,240,.82);padding-inline:20px;border-radius:14px}
+.feat>div{background:rgba(255,250,240,.78);border-radius:12px}
+.hero>div:first-child,.about>div:first-child{
+ background:rgba(255,250,240,.88);
+ padding:24px;
+ border:1px solid rgba(126,90,46,.18);
+ border-radius:20px;
+}
 footer{
  background-color:#2d3025;
- background-image:linear-gradient(rgba(36,44,37,.74),rgba(36,44,37,.74)),var(--wood-grain);
+ background-image:linear-gradient(rgba(36,44,37,.72),rgba(36,44,37,.72)),var(--wood-grain);
  background-size:auto,var(--wood-size);
  background-position:top center;
  color:#f4eddf;
@@ -182,4 +206,10 @@ footer{
 }
 @media(max-width:820px){
  :root{--wood-grain:url("../images/wood-background-640.webp");--wood-size:640px 640px}
+ .menu{background-image:linear-gradient(rgba(255,248,235,.70),rgba(255,248,235,.70)),var(--wood-grain);padding:14px;gap:14px}
+ .items{padding:2px 12px;min-width:0}
+ .hero>div:first-child,.about>div:first-child{padding:20px}
+ .feat{gap:8px}
+ .feat>div{padding:12px 16px}
+ .strip{padding:18px}
 }
