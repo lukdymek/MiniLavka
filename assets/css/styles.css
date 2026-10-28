@@ -213,3 +213,27 @@ footer{
  .feat>div{padding:12px 16px}
  .strip{padding:18px}
 }
+
+/* Theme control stays available alongside the language selector on phones. */
+.theme-toggle{display:grid;place-items:center;flex-shrink:0;width:44px;height:44px;padding:10px;border:1px solid var(--line);border-radius:50%;background:var(--card);color:var(--cream);cursor:pointer}
+.theme-toggle svg{width:22px;height:22px}
+.theme-sun{display:none}
+.theme-toggle:hover{border-color:var(--gold)}
+html[data-theme="dark"]{color-scheme:dark;--bg:#211c17;--bg2:#2b241d;--card:#30271f;--cream:#fff1d8;--mut:#dbc7aa;--gold:#e0b767;--gold2:#f0c779;--line:#69523b;--wood-wash:rgba(17,13,10,.72)}
+[data-theme="dark"] .theme-moon{display:none}
+[data-theme="dark"] .theme-sun{display:block}
+[data-theme="dark"] header{background:rgba(30,24,19,.97)}
+[data-theme="dark"] .menu{background-color:#30271f;background-image:linear-gradient(rgba(29,22,16,.70),rgba(29,22,16,.70)),var(--wood-grain);border-color:var(--line)}
+[data-theme="dark"] .items{background:rgba(31,25,20,.91);border-color:var(--line)}
+[data-theme="dark"] .it{border-color:var(--line)}
+[data-theme="dark"] .card,[data-theme="dark"] .box{background:var(--card)}
+[data-theme="dark"] .strip,[data-theme="dark"] .feat>div,[data-theme="dark"] .hero>div:first-child,[data-theme="dark"] .about>div:first-child{background:rgba(33,27,21,.92);border-color:var(--line)}
+[data-theme="dark"] .tabs button.on{background:var(--gold);border-color:var(--gold);color:#21180d}
+[data-theme="dark"] .lang button.on{color:#21180d}
+[data-theme="dark"] .gallery-stage:after{background:linear-gradient(to top,var(--bg),transparent 30%)}
+[data-theme="dark"] .gallery-actions button{color:var(--cream);border-color:var(--line)}
+[data-theme="dark"] .gallery-actions button:hover{background:var(--card)}
+[data-theme="dark"] .wordmark-mini,[data-theme="dark"] .wordmark-lavka{color:#f3d58c;text-shadow:0 1px 2px #000}
+[data-theme="dark"] .wordmark-rule{background:linear-gradient(90deg,#a77b31,#f3d58c,#a77b31)}
+[data-theme="dark"] .btn.ghost:hover{background:var(--gold);color:#21180d}
+@media(max-width:820px){.nav{gap:8px}.brand span{display:none}.theme-toggle{width:44px;height:44px}}
