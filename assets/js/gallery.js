@@ -8,6 +8,27 @@
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   let current = 0, timer, paused = reducedMotion.matches, hovered = false, focused = false, touchStart = null, request = 0;
 
+
+  const labels = {
+    en: {gallery:'Mini Lavka food gallery',choose:'Choose photo',photo:'Show photo',prev:'Previous photo',next:'Next photo',play:'Play slideshow',pause:'Pause slideshow',close:'Close',images:['Signature pizza with olives and vegetables','Fresh kebab wrap with vegetables','Pepperoni pizza, fresh from the oven','Kebab box with fries and vegetables','Four cheese pizza','Hawaiian pizza','Mushroom pizza','Pizza finished with sauce']},
+    lv: {gallery:'Mini Lavka ēdienu galerija',choose:'Izvēlēties foto',photo:'Rādīt foto',prev:'Iepriekšējais foto',next:'Nākamais foto',play:'Sākt slaidrādi',pause:'Apturēt slaidrādi',close:'Aizvērt',images:['Pica ar olīvām un dārzeņiem','Svaigs kebaba lavašs ar dārzeņiem','Svaigi cepta peperoni pica','Kebaba bokss ar frī un dārzeņiem','Četru sieru pica','Havaju pica','Sēņu pica','Pica ar mērci']},
+    ru: {gallery:'Галерея блюд Mini Lavka',choose:'Выбрать фото',photo:'Показать фото',prev:'Предыдущее фото',next:'Следующее фото',play:'Включить слайд-шоу',pause:'Остановить слайд-шоу',close:'Закрыть',images:['Пицца с оливками и овощами','Свежий лаваш с кебабом и овощами','Пепперони из печи','Кебаб-бокс с картофелем фри и овощами','Пицца четыре сыра','Гавайская пицца','Грибная пицца','Пицца с соусом']}
+  };
+  const text = () => labels[document.documentElement.lang] || labels.en;
+  function translateGallery() {
+    const t=text();
+    gallery.setAttribute('aria-label',t.gallery);
+    gallery.querySelector('.gallery-dots').setAttribute('aria-label',t.choose);
+    gallery.querySelector('.gallery-prev').setAttribute('aria-label',t.prev);
+    gallery.querySelector('.gallery-next').setAttribute('aria-label',t.next);
+    dots.forEach((dot,i)=>dot.setAttribute('aria-label',`${t.photo} ${i+1}`));
+    slides.forEach((slide,i)=>slide.alt=t.images[i] || t.gallery);
+    const close=document.querySelector('.x');if(close)close.setAttribute('aria-label',t.close);
+    status.textContent='';
+    updatePause();
+  }
+  document.addEventListener('languagechange',translateGallery);
+
   function schedule() {
     clearTimeout(timer);
     if (!paused && !hovered && !focused && !document.hidden && slides.length > 1) {
@@ -37,7 +58,7 @@
 
   function updatePause() {
     toggle.textContent = paused ? '▶' : 'Ⅱ';
-    toggle.setAttribute('aria-label', paused ? 'Play slideshow' : 'Pause slideshow');
+    toggle.setAttribute('aria-label', paused ? text().play : text().pause);
     toggle.setAttribute('aria-pressed', String(paused));
     schedule();
   }
@@ -66,5 +87,5 @@
   gallery.addEventListener('touchcancel', () => { touchStart = null; schedule(); }, { passive: true });
   document.addEventListener('visibilitychange', schedule);
   reducedMotion.addEventListener('change', () => { paused = reducedMotion.matches; updatePause(); });
-  updatePause();
+  translateGallery();
 })();

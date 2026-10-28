@@ -12,11 +12,38 @@ d:{lc:"Chicken kebab, garlic sauce, cabbage, tomatoes, fresh and pickled cucumbe
 const FAV={ru:["Пицца Hawai","Лаваш","Донер в булке","Кебаб бокс","Гирос пита","Картофель фри","Хот-дог","Драники"],lv:["Hawai pica","Lavašs","Dönerz maizītē","Kebab Box","Gyros pita","Kartupeļi frī","Hotdogs","Kartupeļu pankūkas"],en:["Hawai pizza","Lavash","Doner in a bun","Kebab Box","Gyros pita","French fries","Hot dog","Potato pancakes"]};
 const FK=["pizza","wrap","doner","box","pita","fries","hotdog","draniki"];
 const PRICE=(p)=>p.toFixed(2).replace(/\.00$/,".00");
-const MENU=(t)=>({pizza:{img:"pizza",it:[["Kebaba Pica",9.5],["BBQ Pica",9],[t.d.kid+" Pica",8],["Pica ar tunci",10],["Margarita",8],["Hawai",9.5],["Gurnee",10],["Balta",8.5],["Peperoni",9],["4 Sieri",9]]},
-lavash:{img:"wrap",it:[["Klasiskais ar vistu","5.40 / 5.80",t.d.lc],["Asais ar vistu","5.40 / 5.80",t.d.la]]},
-box:{img:"box",it:[[t.d.s1,6,t.d.bx],[t.d.s2,6,t.d.bx],[t.d.s3,6,t.d.bx],[t.d.s4,6,t.d.bx]]},
-pita:{img:"pita",it:[["Pita ar gurķu mērci",5.8,t.d.pt],["Pita ar ķiploku mērci",5.8,t.d.pt],["Pita ar aso mērci",5.8,t.d.pt]]},
-snack:{img:"fries",it:[["Kartupeļi frī",2.5],["Ķiploku grauzdiņi ar sieru",3.5],["Kraukšķīgā vistas fileja",3.9],["Kraukšķīgās siera bumbiņas",3.9],["Kalmāru gredzeni",3.9],["Sīpolu gredzeni",3]]}});
+
+const MENU_NAMES = {
+ en: {
+  pizza: ['Kebab pizza', 'BBQ pizza', 'Kids’ pizza', 'Tuna pizza', 'Margherita', 'Hawaiian pizza', 'Gurnee pizza', 'White pizza', 'Pepperoni', 'Four cheese pizza'],
+  lavash: ['Classic chicken wrap', 'Spicy chicken wrap'],
+  pita: ['Pita with cucumber sauce', 'Pita with garlic sauce', 'Pita with spicy sauce'],
+  snack: ['French fries', 'Garlic toast with cheese', 'Crispy chicken fillet', 'Crispy cheese bites', 'Squid rings', 'Onion rings']
+ },
+ ru: {
+  pizza: ['Кебаб-пицца', 'Барбекю-пицца', 'Детская пицца', 'Пицца с тунцом', 'Маргарита', 'Гавайская пицца', 'Гурнее', 'Белая пицца', 'Пепперони', 'Четыре сыра'],
+  lavash: ['Классический лаваш с курицей', 'Острый лаваш с курицей'],
+  pita: ['Пита с огуречным соусом', 'Пита с чесночным соусом', 'Пита с острым соусом'],
+  snack: ['Картофель фри', 'Чесночные гренки с сыром', 'Хрустящее куриное филе', 'Хрустящие сырные шарики', 'Кольца кальмара', 'Луковые кольца']
+ },
+ lv: {
+  pizza: ['Kebaba pica', 'BBQ pica', 'Bērnu pica', 'Pica ar tunci', 'Margarita', 'Hawai', 'Gurnee', 'Baltā pica', 'Peperoni', 'Četri sieri'],
+  lavash: ['Klasiskais lavašs ar vistu', 'Asais lavašs ar vistu'],
+  pita: ['Pita ar gurķu mērci', 'Pita ar ķiploku mērci', 'Pita ar aso mērci'],
+  snack: ['Kartupeļi frī', 'Ķiploku grauzdiņi ar sieru', 'Kraukšķīgā vistas fileja', 'Kraukšķīgās siera bumbiņas', 'Kalmāru gredzeni', 'Sīpolu gredzeni']
+ }
+};
+const MENU=(t)=>{
+ const n=MENU_NAMES[t===T.en?'en':t===T.lv?'lv':'ru'];
+ const rows=(names,prices,descriptions=[])=>names.map((name,i)=>[name,prices[i],descriptions[i]]);
+ return {
+  pizza:{img:'pizza',it:rows(n.pizza,[9.5,9,8,10,8,9.5,10,8.5,9,9])},
+  lavash:{img:'wrap',it:rows(n.lavash,['5.40 / 5.80','5.40 / 5.80'],[t.d.lc,t.d.la])},
+  box:{img:'box',it:[[t.d.s1,6,t.d.bx],[t.d.s2,6,t.d.bx],[t.d.s3,6,t.d.bx],[t.d.s4,6,t.d.bx]]},
+  pita:{img:'pita',it:rows(n.pita,[5.8,5.8,5.8],[t.d.pt,t.d.pt,t.d.pt])},
+  snack:{img:'fries',it:rows(n.snack,[2.5,3.5,3.9,3.9,3.9,3])}
+ };
+};
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.1});function obs(){document.querySelectorAll(".reveal:not(.in)").forEach(e=>io.observe(e))}
 let L="ru",tab="pizza";
 const $=s=>document.querySelector(s);
@@ -27,7 +54,7 @@ $("#tabs").innerHTML=Object.keys(t.tabs).map(k=>`<button class="${k===tab?"on":"
 const m=MENU(t)[tab],im=$("#mimg");im.alt=t.tabs[tab];im.src=IMG[m.img];im.classList.remove("fd");void im.offsetWidth;im.classList.add("fd");
 $("#items").innerHTML=m.it.map((i,n)=>`<div class="it pop" style="--i:${n}"><div><div class="row"><h3>${i[0]}</h3><i></i><b>€${typeof i[1]==="number"?i[1].toFixed(2):i[1]}</b></div>${i[2]?`<small>${i[2]}</small>`:""}</div></div>`).join("");
 $("#favs").innerHTML=FK.map((k,n)=>`<figure class="reveal" style="transition-delay:${n*70}ms"><img src="${IMG[k]}" alt="" loading="lazy"><figcaption>${FAV[L][n]}</figcaption></figure>`).join("");
-obs();try{localStorage.setItem("ml-lang",L)}catch(e){}}
+document.dispatchEvent(new Event("languagechange"));obs();try{localStorage.setItem("ml-lang",L)}catch(e){}}
 document.querySelectorAll(".lang button").forEach(b=>b.onclick=()=>{L=b.dataset.l;render()});
 let previousFocus;function openM(){previousFocus=document.activeElement;$("#m").classList.add("open");document.body.style.overflow="hidden";$("#m .x").focus()}function closeM(){$("#m").classList.remove("open");document.body.style.overflow="";previousFocus?.focus()}document.addEventListener("keydown",e=>{if(!$("#m").classList.contains("open"))return;if(e.key==="Escape")closeM();if(e.key==="Tab"){const els=[...$("#m").querySelectorAll("button,a[href]")];if(e.shiftKey&&document.activeElement===els[0]){e.preventDefault();els.at(-1).focus()}else if(!e.shiftKey&&document.activeElement===els.at(-1)){e.preventDefault();els[0].focus()}}});
 function toast(s){const e=$("#toast");e.textContent=s;e.classList.add("on");setTimeout(()=>e.classList.remove("on"),3800)}
